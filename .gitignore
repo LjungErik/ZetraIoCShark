@@ -1,0 +1,5 @@
+## Basic ignore for build and out
+
+/build
+/out
+/.idea
