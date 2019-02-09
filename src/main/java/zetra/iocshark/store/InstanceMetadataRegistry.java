@@ -7,10 +7,11 @@ import zetra.iocshark.store.instance.InstanceMetadata;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class InstanceMetadataRegistry {
 
-    private Map<Class, InstanceMetadata> registry = new HashMap<>();
+    private ConcurrentHashMap<Class, InstanceMetadata> registry = new ConcurrentHashMap<>();
 
     void register(InstanceMetadata metadata) throws IocStoreException {
         if(registry.containsKey(metadata.getInterfaceClass())) {
