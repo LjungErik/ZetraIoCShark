@@ -18,7 +18,7 @@ public class ScopeMetadata {
         return type;
     }
 
-    public boolean saveInstance() {
+    public boolean isSingleton() {
         return type == ScopeType.Singleton;
     }
 

@@ -13,13 +13,11 @@ public class InstanceMetadata {
     private Class<?> interfaceClass;
     private InstanceCreationMetadata creationMetadata;
     private ScopeMetadata scopeMetadata;
-    private Object savedInstance;
 
     private InstanceMetadata(Class<?> interfaceClass, InstanceCreationMetadata creationMetadata, ScopeMetadata scopeMetadata) {
         this.interfaceClass = interfaceClass;
         this.creationMetadata = creationMetadata;
         this.scopeMetadata = scopeMetadata;
-        this.savedInstance = null;
     }
 
     public Class<?> getInterfaceClass() {
@@ -30,22 +28,14 @@ public class InstanceMetadata {
         return creationMetadata.getDependencies();
     }
 
-    public Object getSavedInstance() {
-        return savedInstance;
-    }
-
     public Object createInstance(Object... args) throws IocStoreException {
         Object instance = creationMetadata.createInstance(args);
-
-        if(scopeMetadata.saveInstance()) {
-            savedInstance = instance;
-        }
 
         return instance;
     }
 
     public boolean isSingleton() {
-        return scopeMetadata.getType() == ScopeType.Singleton;
+        return scopeMetadata.isSingleton();
     }
 
     public static <T> InstanceMetadata create(Class<T> interfaceClass, Class<? extends T> instanceClass) throws IocStoreException {
@@ -58,10 +48,6 @@ public class InstanceMetadata {
         }
 
         return new InstanceMetadata(baseClass, creationMetadata, scopeMetadata);
-    }
-
-    public static InstanceMetadata create(Method method) {
-        return create(method, null);
     }
 
     public static InstanceMetadata create(Method method, Object config) {
